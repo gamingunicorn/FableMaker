@@ -1,0 +1,20 @@
+/* styles.css */
+
+/* Set the background color for the entire page */
+body {
+    background-color: #eeec94; /* light blue color */
+    font-family: 'Georgia', sans-serif; /* set the font */
+    color: #000000; /* set text color */
+}
+
+/* Optional: Style the headings and paragraphs */
+h1 {
+    color: #000000; /* heading color */
+    font-size: larger;
+    font-family: 'Georgia', serif; /* font for the heading */
+}
+
+p {
+    font-size: 24px; /* adjust font size */
+    line-height: 1.6; /* improve readability */
+}
