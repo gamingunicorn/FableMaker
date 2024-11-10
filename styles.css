@@ -3,7 +3,7 @@
 /* Set the background color for the entire page */
 body {
     background-color: #eeec94; /* light blue color */
-    font-family: 'Algerian', Arial, sans-serif; /* set the font */
+    font-family:  Arial, sans-serif; /* set the font */
     color: #000000; /* set text color */
 }
 
@@ -11,7 +11,7 @@ body {
 h1 {
     color: #000000; /* heading color */
     font-size: larger;
-    font-family: 'Algerian', Arial, serif; /* font for the heading */
+    font-family:  Arial, serif; /* font for the heading */
 }
 
 p {
