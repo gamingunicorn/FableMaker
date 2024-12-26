@@ -2,7 +2,12 @@
 
 /* Set the background color for the entire page */
 body {
-    background-image: fablemaker backsrop 1.png; /* light blue color */
+    background-image: url('fablemaker backdrop 1.png'); /* light blue color */
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    background-repeat: no-repeat; /* Prevents repeating the image */
+    background-color: #f0f0f0; /* Fallback color */
     font-family:  Arial, sans-serif; /* set the font */
     color: #000000; /* set text color */
 }
@@ -10,7 +15,7 @@ body {
 /* Optional: Style the headings and paragraphs */
 h1 {
     color: #000000; /* heading color */
-    font-size: larger;
+    font-size: x-large;
     font-family:  Arial, serif; /* font for the heading */
 }
 
