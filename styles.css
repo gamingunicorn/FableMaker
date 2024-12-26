@@ -15,15 +15,16 @@ body {
 /* Optional: Style the headings and paragraphs */
 h1 {
     color: #000000; /* heading color */
-    font-size: large;
+    font-size: xx-large;
     font-family:  Arial, serif; /* font for the heading */
 }
 
 p {
-    font-size: large; /* adjust font size */
+    font-size: x-large; /* adjust font size */
     line-height: 1.6; /* improve readability */
 }
 
 .news {
-    background-color: rgb(0, 70, 0);
+    background-color: rgb(28, 94, 28);
+    font-size: larger
 }
