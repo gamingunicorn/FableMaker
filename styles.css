@@ -15,11 +15,11 @@ body {
 /* Optional: Style the headings and paragraphs */
 h1 {
     color: #000000; /* heading color */
-    font-size: x-large;
+    font-size: xx-large;
     font-family:  Arial, serif; /* font for the heading */
 }
 
 p {
-    font-size: 24px; /* adjust font size */
+    font-size: xx-large /* adjust font size */
     line-height: 1.6; /* improve readability */
 }
