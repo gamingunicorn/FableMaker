@@ -20,6 +20,6 @@ h1 {
 }
 
 p {
-    font-size: large /* adjust font size */
+    font-size: large; /* adjust font size */
     line-height: 1.6; /* improve readability */
 }
