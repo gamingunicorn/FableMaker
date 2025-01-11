@@ -6,7 +6,7 @@ body {
     background-position: center;
     background-attachment: fixed;
     background-repeat: no-repeat; /* Prevents repeating the image */
-    background-color: #f0f0f0; /* Fallback color */
+    background-color: #cfe9f0; /* Fallback color */
     font-family:  Arial, sans-serif; /* set the font */
     color: #000000; /* set text color */
 }
@@ -24,6 +24,6 @@ p {
 }
 
 .news {
-    background-color: rgb(28, 94, 28);
+    background-color: rgb(155, 133, 92);
     font-size: larger
 }
