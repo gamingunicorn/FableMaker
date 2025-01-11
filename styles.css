@@ -2,7 +2,6 @@
 
 /* Set the background color for the entire page */
 body {
-    background-image: url('fablemaker backdrop 1.png'); /* light blue color */
     background-size: cover;
     background-position: center;
     background-attachment: fixed;
