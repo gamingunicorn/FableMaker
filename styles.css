@@ -27,3 +27,8 @@ p {
     background-color: rgb(155, 133, 92);
     font-size: larger
 }
+
+select {
+    width: 64px;
+    height: 32px;
+  }
