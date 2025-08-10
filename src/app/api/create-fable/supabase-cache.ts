@@ -1,6 +1,15 @@
 import { createClient } from '@supabase/supabase-js';
 import crypto from 'crypto';
 
+// Type definition for fable parameters
+type FableParams = {
+  animal1: string;
+  animal2: string;
+  setting: string;
+  moral: string;
+  modelledMode: string;
+};
+
 // Initialize Supabase client
 function getSupabaseClient() {
   const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
@@ -14,13 +23,7 @@ function getSupabaseClient() {
 }
 
 // Generate a unique cache key from fable parameters
-export function generateCacheKey(params: {
-  animal1: string;
-  animal2: string;
-  setting: string;
-  moral: string;
-  modelledMode: string;
-}): string {
+export function generateCacheKey(params: FableParams): string {
   const normalizedParams = {
     animal1: params.animal1.toLowerCase().trim(),
     animal2: params.animal2.toLowerCase().trim(),
@@ -62,7 +65,7 @@ export async function getCachedFable(cacheKey: string): Promise<string | null> {
 }
 
 // Store fable in cache
-export async function storeFableInCache(cacheKey: string, fable: string, params: any): Promise<void> {
+export async function storeFableInCache(cacheKey: string, fable: string, params: FableParams): Promise<void> {
   try {
     const supabase = getSupabaseClient();
     

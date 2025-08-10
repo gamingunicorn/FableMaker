@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getCacheStats, cleanOldCache } from '../create-fable/supabase-cache';
 
-export async function GET(request: NextRequest) {
+export async function GET() {
   try {
     const stats = await getCacheStats();
     return NextResponse.json(stats);
