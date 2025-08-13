@@ -2,6 +2,36 @@
 
 import { useState, useEffect } from "react";
 
+// Animal emoji mapping
+const ANIMAL_EMOJIS: { [key: string]: string } = {
+  'Eagle': '🦅',
+  'Elephant': '🐘',
+  'Fox': '🦊',
+  'Gorilla': '🦍',
+  'Lion': '🦁',
+  'Owl': '🦉',
+  'Shark': '🦈',
+  'Ant': '🐜',
+  'Bee': '🐝',
+  'Crow': '🐦‍⬛',
+  'Dolphin': '🐬',
+  'Fish': '🐟',
+  'Hummingbird': '🐦',
+  'Mole': '🦦',
+  'Mouse': '🐭',
+  'Snake': '🐍',
+  'Worm': '🪱'
+};
+
+// Setting emoji mapping
+const SETTING_EMOJIS: { [key: string]: string } = {
+  'Desert': '🏜️',
+  'Forest': '🌲',
+  'Jungle': '🌴',
+  'Meadow': '🌾',
+  'Underwater': '🌊'
+};
+
 // Configuration arrays for all dropdown options (sorted alphabetically)
 const ANIMALS_1 = ['Eagle', 'Elephant', 'Fox', 'Gorilla', 'Lion', 'Owl', 'Shark'];
 const ANIMALS_2 = ['Ant', 'Bee', 'Crow', 'Dolphin', 'Fish', 'Hummingbird', 'Mole', 'Mouse', 'Snake', 'Worm'];
@@ -107,7 +137,7 @@ export default function Home() {
         <option value="">Please select...</option>
         {ANIMALS_1.map((animal) => (
           <option key={animal} value={animal}>
-            {animal}
+            {ANIMAL_EMOJIS[animal]} {animal}
           </option>
         ))}
       </select>
@@ -119,7 +149,7 @@ export default function Home() {
           <option value="">Please select...</option>
           {ANIMALS_2.map((animal) => (
             <option key={animal} value={animal}>
-              {animal}
+              {ANIMAL_EMOJIS[animal]} {animal}
             </option>
           ))}
         </select>
@@ -130,7 +160,7 @@ export default function Home() {
       <option value="">Please select...</option>
       {SETTINGS.map((setting) => (
         <option key={setting} value={setting}>
-          {setting}
+          {SETTING_EMOJIS[setting]} {setting}
         </option>
       ))}
     </select>

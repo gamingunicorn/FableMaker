@@ -1,6 +1,38 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { generateCacheKey, getCachedFable, storeFableInCache } from './supabase-cache';
 
+// Function to check if Supabase cache is available
+async function isSupabaseCacheAvailable(): Promise<boolean> {
+  try {
+    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+    const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+    
+    if (!supabaseUrl || !supabaseKey) {
+      console.warn('Supabase environment variables not found');
+      return false;
+    }
+    
+    // Try to make a simple query to test connectivity
+    const { createClient } = await import('@supabase/supabase-js');
+    const supabase = createClient(supabaseUrl, supabaseKey);
+    
+    const { error } = await supabase
+      .from('fable_cache')
+      .select('cache_key')
+      .limit(1);
+    
+    if (error) {
+      console.warn('Supabase cache not available:', error.message);
+      return false;
+    }
+    
+    return true;
+  } catch (error) {
+    console.warn('Error checking Supabase cache availability:', error);
+    return false;
+  }
+}
+
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
@@ -14,13 +46,20 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Generate cache key and check for cached fable
-    const cacheKey = generateCacheKey({ animal1, animal2, setting, moral, modelledMode });
-    const cachedFable = await getCachedFable(cacheKey);
+    // Check if Supabase cache is available
+    const cacheAvailable = await isSupabaseCacheAvailable();
     
-    if (cachedFable) {
-      console.log('Returning cached fable for key:', cacheKey);
-      return NextResponse.json({ fable: cachedFable, cached: true });
+    if (cacheAvailable) {
+      // Generate cache key and check for cached fable
+      const cacheKey = generateCacheKey({ animal1, animal2, setting, moral, modelledMode });
+      const cachedFable = await getCachedFable(cacheKey);
+      
+      if (cachedFable) {
+        console.log('Returning cached fable for key:', cacheKey);
+        return NextResponse.json({ fable: cachedFable, cached: true });
+      }
+    } else {
+      console.warn('Supabase cache not available, skipping cache check');
     }
 
     // Check if OpenAI API key is available
@@ -28,9 +67,23 @@ export async function POST(request: NextRequest) {
     if (!apiKey) {
       console.warn('OpenAI API key not found, using fallback generator');
       const fable = generateFable(animal1, animal2, setting, moral, modelledMode);
-      // Store fallback fable in cache
-      await storeFableInCache(cacheKey, fable, { animal1, animal2, setting, moral, modelledMode });
+      // Only try to store in cache if cache is available
+      if (cacheAvailable) {
+        const cacheKey = generateCacheKey({ animal1, animal2, setting, moral, modelledMode });
+        await storeFableInCache(cacheKey, fable, { animal1, animal2, setting, moral, modelledMode });
+      }
       return NextResponse.json({ fable, cached: false });
+    }
+
+    // If cache is not available, don't call OpenAI API
+    if (!cacheAvailable) {
+      console.warn('Supabase cache not available, using fallback generator instead of OpenAI API');
+      const fable = generateFable(animal1, animal2, setting, moral, modelledMode);
+      return NextResponse.json({ 
+        fable, 
+        cached: false, 
+        warning: 'OpenAI API call skipped due to cache unavailability' 
+      });
     }
 
     // Create the fable prompt
@@ -76,6 +129,7 @@ Keep it concise. End with "Moral: ${moral}"`;
       // Fallback to template-based generation
       const fable = generateFable(animal1, animal2, setting, moral, modelledMode);
       // Store fallback fable in cache
+      const cacheKey = generateCacheKey({ animal1, animal2, setting, moral, modelledMode });
       await storeFableInCache(cacheKey, fable, { animal1, animal2, setting, moral, modelledMode });
       return NextResponse.json({ fable, cached: false });
     }
@@ -85,6 +139,7 @@ Keep it concise. End with "Moral: ${moral}"`;
     const fable = openaiResult.choices[0].message.content;
 
     // Store the OpenAI-generated fable in cache
+    const cacheKey = generateCacheKey({ animal1, animal2, setting, moral, modelledMode });
     await storeFableInCache(cacheKey, fable, { animal1, animal2, setting, moral, modelledMode });
 
     return NextResponse.json({ fable, cached: false });
@@ -97,8 +152,11 @@ Keep it concise. End with "Moral: ${moral}"`;
     
     // Try to cache the fallback fable (with error handling)
     try {
-      const cacheKey = generateCacheKey({ animal1, animal2, setting, moral, modelledMode });
-      await storeFableInCache(cacheKey, fable, { animal1, animal2, setting, moral, modelledMode });
+      const cacheAvailable = await isSupabaseCacheAvailable();
+      if (cacheAvailable) {
+        const cacheKey = generateCacheKey({ animal1, animal2, setting, moral, modelledMode });
+        await storeFableInCache(cacheKey, fable, { animal1, animal2, setting, moral, modelledMode });
+      }
     } catch (cacheError) {
       console.error('Error caching fallback fable:', cacheError);
     }
